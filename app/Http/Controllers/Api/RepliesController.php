@@ -20,4 +20,15 @@ class RepliesController extends Controller
             ->setStatusCode(201);
     }
 
+    public function destroy(Topic $topic, Reply $reply)
+    {
+        if ($reply->topic_id != $topic->id) {
+            return $this->response->errorBadRequest();
+        }
+
+        $this->authorize('destroy', $reply);
+        $reply->delete();
+
+        return $this->response->noContent();
+    }
 }
